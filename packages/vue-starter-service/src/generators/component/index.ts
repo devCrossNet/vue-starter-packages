@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { Config } from '../../models/Config';
-import { folderExists } from '../../utils/path';
+import { folderExists, runtimeRoot } from '../../utils/path';
 
 export = {
   description: 'Add a single file component',
@@ -14,7 +14,9 @@ export = {
           return 'name is required';
         }
 
-        return folderExists(value) ? `folder already exists (${value})` : true;
+        return folderExists(runtimeRoot(path.join(Config.generators.outputDirectory, value)))
+          ? `folder already exists (${value})`
+          : true;
       },
     },
     {

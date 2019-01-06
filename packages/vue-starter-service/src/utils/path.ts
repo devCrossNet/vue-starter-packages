@@ -1,6 +1,5 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { Package } from '../models/Package';
 
 export const packageRoot = (dir: any = '') => {
   return path.join(process.cwd(), 'node_modules/vue-starter-service', dir);
@@ -11,7 +10,7 @@ export const runtimeRoot = (dir: any = '') => {
 };
 
 export const folderExists = (folder: string): boolean => {
-  return fs.existsSync(path.join(path.resolve(process.cwd()), 'src', 'app', folder));
+  return fs.existsSync(path.resolve(folder));
 };
 
 export const ensureDirectoryExists = (filePath) => {
