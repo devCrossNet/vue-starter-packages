@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
+import { Package } from '../models/Package';
 
 export const packageRoot = (dir: any = '') => {
   return path.join(process.cwd(), 'node_modules/vue-starter-service', dir);

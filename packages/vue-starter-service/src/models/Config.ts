@@ -5,6 +5,8 @@ export interface IConfig {
   generators: {
     blueprintDirectory: string;
     outputDirectory: string;
+    routerFile: string;
+    stateFile: string;
   };
   i18n: {
     defaultLocale: string;

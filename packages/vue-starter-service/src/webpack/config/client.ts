@@ -7,7 +7,7 @@ const HTMLPlugin = require('html-webpack-plugin');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 
-export const client: webpack.Configuration = merge(base, {
+export let client: webpack.Configuration = merge(base, {
   entry: {
     app: runtimeRoot('src/client/index'),
   },
@@ -47,5 +47,7 @@ if (isProd) {
   ]);
   (client as any).performance.hints = 'error';
 }
+
+client = require(runtimeRoot('.vue-starter/webpack.config')).clientConfig(client);
 
 export default client;

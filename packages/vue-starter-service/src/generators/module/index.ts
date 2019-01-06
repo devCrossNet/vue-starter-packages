@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { addModuleToRoutes, addModuleToState } from '../ast';
+import { addModuleToRouter, addModuleToState } from '../ast';
 import { Config } from '../../models/Config';
 import { folderExists } from '../../utils/path';
 
@@ -61,7 +61,7 @@ export = {
         abortOnFail: true,
       });
 
-      addModuleToRoutes(path.join(path.resolve(process.cwd()), 'src', 'app', 'router.ts'), data.moduleName);
+      addModuleToRouter(path.join(path.resolve(process.cwd()), Config.generators.routerFile), data.moduleName);
     }
 
     if (data.wantVuex) {
@@ -116,7 +116,7 @@ export = {
         },
       ]);
 
-      addModuleToState(path.join(path.resolve(process.cwd()), 'src', 'app', 'state.ts'), data.moduleName);
+      addModuleToState(path.join(path.resolve(process.cwd()), Config.generators.stateFile), data.moduleName);
     }
 
     return actions;

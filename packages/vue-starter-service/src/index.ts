@@ -14,7 +14,7 @@ import './commands/build';
 import './commands/dev';
 
 commander
-  .name('vue-starter-service')
+  .name(Package.name)
   .version(Package.version, '-v, --version')
   .description(Package.description);
 

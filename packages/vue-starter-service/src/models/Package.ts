@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import { packageRoot } from '../utils/path';
 
 export interface IPackage {
+  name: string;
   version: string;
   description: string;
 }

@@ -3,7 +3,7 @@
   "version": "1.0.0-alpha.0",
   "description": "vue-starter service for development tasks",
   "author": "Johannes Werner <johannes.werner86@gmail.com>",
-  "homepage": "https://github.com/devCrossNet/vue-starter-service#readme",
+  "homepage": "https://github.com/devCrossNet/vue-starter-packages#readme",
   "license": "MIT",
   "main": "dist/index.js",
   "bin": {
@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devCrossNet/vue-starter-service.git"
+    "url": "git+https://github.com/devCrossNet/vue-starter-packages.git"
   },
   "scripts": {
     "compile": "tsc",
@@ -30,7 +30,7 @@
     "lint": "tslint -c tslint.json './src/**/*.ts'"
   },
   "bugs": {
-    "url": "https://github.com/devCrossNet/vue-starter-service/issues"
+    "url": "https://github.com/devCrossNet/vue-starter-packages/issues"
   },
   "dependencies": {
     "@babel/core": "7.2.0",

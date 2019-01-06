@@ -47,9 +47,9 @@ const findAstNodes = (
   return arr;
 };
 
-export const addModuleToRoutes = (pathToAppRoutes: string, moduleName: string): void => {
+export const addModuleToRouter = (pathToAppRouter: string, moduleName: string): void => {
   try {
-    let file = fs.readFileSync(pathToAppRoutes, 'utf-8');
+    let file = fs.readFileSync(pathToAppRouter, 'utf-8');
 
     getAST(file);
 
@@ -65,15 +65,15 @@ export const addModuleToRoutes = (pathToAppRoutes: string, moduleName: string): 
       `\nimport { ${upperFirst(moduleName)}Routes } from './${lowerFirst(moduleName)}/routes';`,
     );
 
-    fs.writeFileSync(pathToAppRoutes, file, { encoding: 'utf-8' });
+    fs.writeFileSync(pathToAppRouter, file, { encoding: 'utf-8' });
   } catch (e) {
     throw new Error(e);
   }
 };
 
-export const addModuleToState = (pathToAppActions: string, moduleName: string): void => {
+export const addModuleToState = (pathToAppState: string, moduleName: string): void => {
   try {
-    let file = fs.readFileSync(pathToAppActions, 'utf-8');
+    let file = fs.readFileSync(pathToAppState, 'utf-8');
 
     getAST(file);
 
@@ -91,7 +91,7 @@ export const addModuleToState = (pathToAppActions: string, moduleName: string): 
       `\nimport { I${upperFirst(moduleName)}State } from './${lowerFirst(moduleName)}/state';`,
     );
 
-    fs.writeFileSync(pathToAppActions, file, { encoding: 'utf-8' });
+    fs.writeFileSync(pathToAppState, file, { encoding: 'utf-8' });
   } catch (e) {
     throw new Error(e);
   }

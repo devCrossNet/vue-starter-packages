@@ -3,7 +3,7 @@
   "version": "1.0.0-alpha.0",
   "description": "vue-starter vuex middle ware to persist stage + adapters",
   "author": "Johannes Werner <johannes.werner86@gmail.com>",
-  "homepage": "https://github.com/devCrossNet/vue-starter-service#readme",
+  "homepage": "https://github.com/devCrossNet/vue-starter-packages#readme",
   "license": "MIT",
   "directories": {
     "dist": "dist"
@@ -14,7 +14,7 @@
   "main": "dist/vuex-persist.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devCrossNet/vue-starter-service.git"
+    "url": "git+https://github.com/devCrossNet/vue-starter-packages.git"
   },
   "scripts": {
     "compile": "tsc",
@@ -26,7 +26,7 @@
     "lint": "tslint -c tslint.json './src/**/*.ts'"
   },
   "bugs": {
-    "url": "https://github.com/devCrossNet/vue-starter-service/issues"
+    "url": "https://github.com/devCrossNet/vue-starter-packages/issues"
   },
   "dependencies": {
     "deepmerge": "3.0.0",
