@@ -6,7 +6,7 @@ export const TestTask = async (command: any) => {
   args = args.concat([
     ...(command.silent || command.silent === undefined ? ['--silent'] : []),
     ...(command.coverage || command.coverage === undefined ? ['--coverage'] : []),
-    `--config=${JSON.stringify(Config.jest)}`,
+    ...(Config.jest ? `--config=${JSON.stringify(Config.jest)}` : []),
   ]);
 
   process.env.NODE_ENV = 'test';
