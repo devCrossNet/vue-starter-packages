@@ -1,6 +1,6 @@
 import { packageRoot } from '../utils/path';
 import { runProcess } from '../utils/process';
-import { logErrorBold, log, drawMessageWithFrame } from '../utils/ui';
+import { logErrorBold, log, HeadLine } from '../utils/ui';
 import { CleanTask } from './clean';
 
 export const DevTask = async (command: any) => {
@@ -9,7 +9,7 @@ export const DevTask = async (command: any) => {
   try {
     await CleanTask(command);
 
-    drawMessageWithFrame('Start development mode...');
+    HeadLine('Start development mode...');
 
     await runProcess(
       'webpack',

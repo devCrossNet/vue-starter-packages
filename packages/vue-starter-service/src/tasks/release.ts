@@ -1,6 +1,6 @@
 import { runProcess } from '../utils/process';
 import { Config } from '../models/Config';
-import { drawMessageWithFrame, logErrorBold, logInfo, log } from '../utils/ui';
+import { logErrorBold, logInfo, log, Result } from '../utils/ui';
 
 export const ReleaseTask = async (command: any) => {
   let args = command.parent.rawArgs.splice(3);
@@ -13,6 +13,8 @@ export const ReleaseTask = async (command: any) => {
   } else if (command.patch) {
     npmVersion = 'patch';
   }
+
+  Result(`Releasing new ${npmVersion} version...`);
 
   try {
     logInfo('Generating CHANGELOG.md...');
@@ -64,5 +66,5 @@ export const ReleaseTask = async (command: any) => {
 
   log('');
 
-  drawMessageWithFrame('New version released.', 'success', true);
+  Result('New version released.');
 };

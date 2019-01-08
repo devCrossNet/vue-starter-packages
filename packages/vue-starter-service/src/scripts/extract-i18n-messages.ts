@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { getTranslationObject, getTranslationsFromString } from './Utils';
 import { Config } from '../models/Config';
-import { drawMessageWithFrame, log } from '../utils/ui';
+import { HeadLine, log, Result } from '../utils/ui';
 import { ensureDirectoryExists } from '../utils/path';
 
 const run = (): void => {
@@ -15,7 +15,7 @@ const run = (): void => {
     const defaultLocale: string = Config.i18n.defaultLocale;
     let translations: any = {};
 
-    drawMessageWithFrame('Scanning files in: ./src/app/**/*.vue.');
+    HeadLine('Scanning files in: ./src/app/**/*.vue.');
 
     log('');
 
@@ -65,7 +65,7 @@ const run = (): void => {
 
     log('');
 
-    drawMessageWithFrame('I18n extraction finished.', 'success', true);
+    Result('I18n extraction finished.');
   });
 };
 

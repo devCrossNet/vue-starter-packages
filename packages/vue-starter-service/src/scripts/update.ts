@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as https from 'https';
 import { Config, configPath } from '../models/Config';
 import { runtimeRoot, ensureDirectoryExists } from '../utils/path';
-import { drawMessageWithFrame, log, logError, logErrorBold, logInfoBold, logSuccess } from '../utils/ui';
+import { log, logError, logErrorBold, logInfoBold, logSuccess, Result } from '../utils/ui';
 
 interface IFile {
   filename: string;
@@ -68,11 +68,11 @@ async function update() {
     const currentVersion: string = Config.currentVersion;
 
     if (latestVersion === currentVersion) {
-      drawMessageWithFrame(`Your project is up to date (Version: ${currentVersion}).`, 'success', true);
+      Result(`Your project is up to date (Version: ${currentVersion}).`);
       return;
     }
 
-    drawMessageWithFrame(`Update from version: ${currentVersion} to version: ${latestVersion}.`, 'info', true);
+    Result(`Update from version: ${currentVersion} to version: ${latestVersion}.`);
 
     const diffResponse: AxiosResponse<any> = await axios.get(
       `${vueStarterRepo}/compare/${currentVersion}...${latestVersion}`,

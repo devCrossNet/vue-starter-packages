@@ -1,53 +1,44 @@
 import { packageRoot } from '../utils/path';
 import { runProcess } from '../utils/process';
-import { logErrorBold, log, drawMessageWithFrame } from '../utils/ui';
+import { logErrorBold, log, HeadLine, Result } from '../utils/ui';
 import { CleanTask } from './clean';
+import * as _ from 'lodash';
+
+const runWebpack = (configName: string, silent: boolean) => {
+  return runProcess(
+    'webpack',
+    ['--mode', 'production', '--config', packageRoot(`dist/webpack/config/${configName}.js`)],
+    { silent },
+  );
+};
 
 const build = async (command: any) => {
   const promises = [];
   const startTime: number = Date.now();
 
-  try {
-    await CleanTask(command);
+  await CleanTask(command);
 
-    drawMessageWithFrame('Start building production bundles...');
+  HeadLine('Start building production bundles...');
+
+  log('');
+
+  const run = (configName: string) => {
+    promises.push(
+      runWebpack(configName, command.silent).then(() => log(`${_.upperFirst(configName)} bundle successfully build.`)),
+    );
+  };
+
+  run('client');
+  run('server');
+  run('isomorphic');
+
+  Promise.all(promises).then(() => {
+    const message = `Production build finished in ${Date.now() - startTime}ms`;
 
     log('');
 
-    promises.push(
-      runProcess('webpack', ['--mode', 'production', '--config', packageRoot('dist/webpack/config/client.js')], {
-        silent: command.silent,
-      })
-        .then(() => log('Client bundle successfully build.'))
-        .catch((e) => logErrorBold(e)),
-    );
-
-    promises.push(
-      runProcess('webpack', ['--mode', 'production', '--config', packageRoot('dist/webpack/config/server.js')], {
-        silent: command.silent,
-      })
-        .then(() => log('Server bundle successfully build.'))
-        .catch((e) => logErrorBold(e)),
-    );
-
-    promises.push(
-      runProcess('webpack', ['--mode', 'production', '--config', packageRoot('dist/webpack/config/isomorphic.js')], {
-        silent: command.silent,
-      })
-        .then(() => log('Isomorphic bundle successfully build.'))
-        .catch((e) => logErrorBold(e)),
-    );
-
-    Promise.all(promises).then(() => {
-      const message = `Production build finished in ${Date.now() - startTime}ms`;
-
-      log('');
-
-      drawMessageWithFrame(message, 'success', true);
-    });
-  } catch (e) {
-    logErrorBold(e);
-  }
+    Result(message);
+  });
 };
 
 const analyze = async (command: any) => {
@@ -55,67 +46,51 @@ const analyze = async (command: any) => {
 
   const startTime: number = Date.now();
 
-  try {
-    await CleanTask(command);
+  await CleanTask(command);
 
-    drawMessageWithFrame('Start analyzing client bundle...');
+  HeadLine('Start analyzing client bundle...');
 
-    log('');
+  log('');
 
-    runProcess('webpack', ['--mode', 'production', '--config', packageRoot('dist/webpack/config/client.js')], {
-      silent: command.silent,
-    })
-      .then(() => {
-        log('Client bundle successfully build.');
+  await runWebpack('client', command.silent);
 
-        const message = `Analysis finished in ${Date.now() - startTime}ms`;
+  log('Client bundle successfully build.');
 
-        log('');
+  const message = `Analysis finished in ${Date.now() - startTime}ms`;
 
-        drawMessageWithFrame(message, 'success', true);
-      })
-      .catch((e) => logErrorBold(e));
-  } catch (e) {
-    logErrorBold(e);
-  }
+  log('');
+
+  Result(message);
 };
 
 const spa = async (command: any) => {
   const startTime: number = Date.now();
 
-  try {
-    await CleanTask(command);
+  await CleanTask(command);
 
-    drawMessageWithFrame('Start building client bundle only...');
+  HeadLine('Start building client bundle only...');
 
-    log('');
+  log('');
 
-    runProcess('webpack', ['--mode', 'production', '--config', packageRoot('dist/webpack/config/spa.js')], {
-      silent: command.silent,
-    })
-      .then(() => {
-        log('Client bundle successfully build.');
+  await runWebpack('spa', command.silent);
 
-        const message = `Production build finished in ${Date.now() - startTime}ms`;
+  log('Client bundle successfully build.');
 
-        log('');
+  const message = `Production build finished in ${Date.now() - startTime}ms`;
 
-        drawMessageWithFrame(message, 'success', true);
-      })
-      .catch((e) => logErrorBold(e));
-  } catch (e) {
-    logErrorBold(e);
-  }
+  log('');
+
+  Result(message);
 };
 
 export const BuildTask = async (command: any) => {
   process.env.NODE_ENV = 'production';
 
   if (command.analyze) {
-    analyze(command);
+    analyze(command).catch((e) => logErrorBold(e));
   } else if (command.spa) {
-    spa(command);
+    spa(command).catch((e) => logErrorBold(e));
   } else {
-    build(command);
+    build(command).catch((e) => logErrorBold(e));
   }
 };

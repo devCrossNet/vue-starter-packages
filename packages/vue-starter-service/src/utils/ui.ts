@@ -26,14 +26,17 @@ const formats = {
   logWarningBold,
 };
 
-export const drawMessageWithFrame = (message: string, type: string = 'info', frameOnTop: boolean = false) => {
+export const HeadLine = (message: string) => {
   const line = new Array(message.length + 1).join('=');
-  type = _.upperFirst(type);
 
-  if (frameOnTop) {
-    formats[`log${type}`](line);
-  }
+  logInfoBold(message);
+  logInfo(line);
+};
 
-  formats[`log${type}Bold`](message);
-  formats[`log${type}`](line);
+export const Result = (message: string) => {
+  const line = new Array(message.length + 1).join('=');
+
+  logSuccess(line);
+  logSuccessBold(message);
+  logSuccess(line);
 };
