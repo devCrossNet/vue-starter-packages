@@ -29,11 +29,13 @@
     "url": "https://github.com/devCrossNet/vue-starter-packages/issues"
   },
   "dependencies": {
-    "deepmerge": "3.0.0",
-    "jest": "23.6.0",
-    "js-cookie": "2.2.0",
-    "ts-jest": "22.4.6",
-    "vuex": "3.0.1"
+    "deepmerge": "^3.0.0",
+    "js-cookie": "^2.2.0",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "ts-jest": "^22.4.6"
   },
   "jest": {
     "globals": {
