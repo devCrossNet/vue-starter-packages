@@ -8,7 +8,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 client.plugins.unshift(new webpack.DefinePlugin({ CLIENT: true, SERVER: false, TEST: true }));
 
-export let spa: webpack.Configuration = merge(client, {
+export const spa: webpack.Configuration = merge(client, {
   plugins: [
     new HTMLPlugin({
       filename: '../index.html',
@@ -22,7 +22,5 @@ export let spa: webpack.Configuration = merge(client, {
     ]),
   ],
 });
-
-spa = require(runtimeRoot('.vue-starter/webpack.config')).spaConfig(spa);
 
 export default spa;

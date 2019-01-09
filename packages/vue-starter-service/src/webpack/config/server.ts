@@ -38,6 +38,4 @@ if (isDev) {
   });
 }
 
-server = require(runtimeRoot('.vue-starter/webpack.config')).serverConfig(server);
-
 export default server;

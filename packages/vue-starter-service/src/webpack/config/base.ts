@@ -6,7 +6,7 @@ const { VueLoaderPlugin } = require('vue-loader');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-export const base: webpack.Configuration = {
+export let base: webpack.Configuration = {
   stats: {
     assets: true,
     children: true,
@@ -98,5 +98,7 @@ export const base: webpack.Configuration = {
 if (analyze) {
   base.plugins.push(new BundleAnalyzerPlugin({ analyzerMode: 'static' }));
 }
+
+base = require(runtimeRoot('.vue-starter/webpack.config'))(base, 'client');
 
 export default base;

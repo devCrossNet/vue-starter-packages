@@ -3,7 +3,7 @@ import { merge } from './utils';
 import { base } from './base';
 import { runtimeRoot } from '../../utils/path';
 
-export const baseServer: webpack.Configuration = merge(base, {
+export let baseServer: webpack.Configuration = merge(base, {
   target: 'node',
   output: {
     path: runtimeRoot('dist/server'),
@@ -21,5 +21,7 @@ export const baseServer: webpack.Configuration = merge(base, {
     __filename: false,
   },
 }) as any;
+
+baseServer = require(runtimeRoot('.vue-starter/webpack.config'))(baseServer, 'server');
 
 export default baseServer;
