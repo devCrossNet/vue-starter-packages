@@ -1,7 +1,6 @@
 import { packageRoot } from '../utils/path';
 import { runProcess } from '../utils/process';
 import { logErrorBold, log, HeadLine, Result } from '../utils/ui';
-import { CleanTask } from './clean';
 import * as _ from 'lodash';
 
 const runWebpack = (configName: string, silent: boolean) => {
@@ -15,8 +14,6 @@ const runWebpack = (configName: string, silent: boolean) => {
 const build = async (command: any) => {
   const promises = [];
   const startTime: number = Date.now();
-
-  await CleanTask(command);
 
   HeadLine('Start building production bundles...');
 
@@ -46,8 +43,6 @@ const analyze = async (command: any) => {
 
   const startTime: number = Date.now();
 
-  await CleanTask(command);
-
   HeadLine('Start analyzing client bundle...');
 
   log('');
@@ -66,8 +61,6 @@ const analyze = async (command: any) => {
 const spa = async (command: any) => {
   const startTime: number = Date.now();
 
-  await CleanTask(command);
-
   HeadLine('Start building client bundle only...');
 
   log('');
@@ -85,6 +78,8 @@ const spa = async (command: any) => {
 
 export const BuildTask = async (command: any) => {
   process.env.NODE_ENV = 'production';
+
+  await runProcess('rimraf', ['./dist']);
 
   if (command.analyze) {
     analyze(command).catch((e) => logErrorBold(e));

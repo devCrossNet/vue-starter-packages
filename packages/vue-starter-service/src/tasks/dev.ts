@@ -1,13 +1,12 @@
 import { packageRoot } from '../utils/path';
 import { runProcess } from '../utils/process';
-import { logErrorBold, log, HeadLine } from '../utils/ui';
-import { CleanTask } from './clean';
+import { logErrorBold, HeadLine } from '../utils/ui';
 
 export const DevTask = async (command: any) => {
   process.env.NODE_ENV = 'development';
 
   try {
-    await CleanTask(command);
+    await runProcess('rimraf', ['./dist']);
 
     HeadLine('Start development mode...');
 
