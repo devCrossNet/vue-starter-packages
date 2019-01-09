@@ -29,11 +29,6 @@ export const client: webpack.Configuration = merge(base, {
     },
     runtimeChunk: 'single',
   },
-  performance: {
-    hints: 'warning',
-    maxEntrypointSize: 318000,
-    maxAssetSize: 267000,
-  },
   plugins: [
     new webpack.DefinePlugin({ CLIENT: true, SERVER: false }),
     new HTMLPlugin({ template: runtimeRoot('src/index.template.html'), spa: false }),
@@ -45,7 +40,6 @@ if (isProd) {
     new ServiceWorkerWebpackPlugin({ entry: runtimeRoot('src/client/sw.ts') }),
     new CompressionPlugin({ algorithm: 'gzip', test: /\.js$|\.css$|\.html$/, threshold: 0, minRatio: 1 }),
   ]);
-  (client as any).performance.hints = 'error';
 }
 
 export default client;
