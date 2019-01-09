@@ -1,6 +1,6 @@
 {
   "name": "vue-starter-service",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "vue-starter service for development tasks",
   "author": "Johannes Werner <johannes.werner86@gmail.com>",
   "homepage": "https://github.com/devCrossNet/vue-starter-packages#readme",
@@ -103,10 +103,10 @@
     "webpack-node-externals": "^1.7.2"
   },
   "devDependencies": {
-    "typescript": "^3.2.2",
-    "vue-template-compiler": "^2.5.21",
     "node-sass": "^4.11.0",
-    "ts-jest": "^22.4.6"
+    "ts-jest": "^22.4.6",
+    "typescript": "^3.2.2",
+    "vue-template-compiler": "^2.5.21"
   },
   "jest": {
     "globals": {
