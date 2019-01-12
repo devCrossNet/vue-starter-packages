@@ -1,9 +1,37 @@
-import * as commander from 'commander';
-import { DevTask } from '../tasks/dev';
+import { Command, CommandHandler } from '../lib/command';
+import { runProcess } from '../utils/process';
+import { HeadLine, logErrorBold } from '../utils/ui';
+import { packageRoot } from '../utils/path';
 
-commander
-  .command('dev')
-  .alias('d')
-  .description('serve application for development')
-  .option('-p, --port', 'webserver port')
-  .action(DevTask);
+@Command({
+  name: 'dev',
+  alias: 'd',
+  description: 'Serve application for development.',
+  options: [{ flags: '-p, --port <port>', description: 'Web-server port.', defaultValue: '3000' }],
+})
+export class Dev implements CommandHandler {
+  public port: string;
+
+  public async run(args: string[], silent: boolean) {
+    process.env.NODE_ENV = 'development';
+    process.env.PORT = this.port;
+
+    try {
+      await runProcess('rimraf', ['./dist'], { silent });
+
+      HeadLine('Start development mode...');
+
+      await runProcess(
+        'webpack',
+        ['--mode', 'development', '--config', packageRoot('dist/webpack/config/dev-server.js')],
+        { silent },
+      );
+
+      await runProcess('webpack', ['--mode', 'development', '--config', packageRoot('dist/webpack/config/server.js')], {
+        silent,
+      });
+    } catch (e) {
+      logErrorBold(e);
+    }
+  }
+}

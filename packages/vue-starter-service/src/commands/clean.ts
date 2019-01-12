@@ -1,9 +1,21 @@
-import * as commander from 'commander';
-import { CleanTask } from '../tasks/clean';
+import { Command, CommandHandler } from '../lib/command';
+import { runProcess } from '../utils/process';
+import { logErrorBold } from '../utils/ui';
+import { Config } from '../models/Config';
 
-commander
-  .command('clean')
-  .alias('c')
-  .description('clean up project')
-  .allowUnknownOption()
-  .action(CleanTask);
+@Command({
+  name: 'clean',
+  alias: 'c',
+  description: 'Clean up the project directory.',
+})
+export class Clean implements CommandHandler {
+  public async run(args: string[], silent: boolean) {
+    args = Config.clean.concat(args);
+
+    try {
+      await runProcess('rimraf', args, { silent });
+    } catch (e) {
+      logErrorBold(e);
+    }
+  }
+}

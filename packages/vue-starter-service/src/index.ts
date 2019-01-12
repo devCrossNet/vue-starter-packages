@@ -1,21 +1,14 @@
 import * as commander from 'commander';
 import { Package } from './models/Package';
-import './commands/generate';
-import './commands/extract-messages';
-import './commands/test';
-import './commands/lint';
-import './commands/e2e';
-import './commands/clean';
-import './commands/storybook';
-import './commands/update';
-import './commands/prettier';
-import './commands/release';
-import './commands/build';
-import './commands/dev';
+import { sync } from 'glob';
+import { packageRoot } from './utils/path';
+
+sync(`${packageRoot()}/dist/commands/*.js`).forEach((file: string) => require(file));
 
 commander
   .name(Package.name)
   .version(Package.version, '-v, --version')
+  .option('-s, --silent', 'silence output.', false)
   .description(Package.description);
 
 commander.parse(process.argv);

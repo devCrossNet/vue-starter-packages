@@ -20,7 +20,13 @@
     ],
     "prettier": [true, null, { "editorconfig": false }],
     "cyclomatic-complexity": [true, 11],
-    "no-console": false
+    "no-console": false,
+    "member-ordering": [
+      true,
+      {
+        "order": ["private-instance-method"]
+      }
+    ]
   },
   "rulesDirectory": ["tslint-plugin-prettier"]
 }

@@ -1,8 +1,19 @@
-import * as commander from 'commander';
-import { ExtractMessagesTask } from '../tasks/extract-messages';
+import { Command, CommandHandler } from '../lib/command';
+import { runProcess } from '../utils/process';
+import { logErrorBold } from '../utils/ui';
+import { packageRoot } from '../utils/path';
 
-commander
-  .command('extract-i18n-messages')
-  .alias('em')
-  .description('extract i18n messages')
-  .action(ExtractMessagesTask);
+@Command({
+  name: 'extract-i18n-messages',
+  alias: 'em',
+  description: 'Extract i18n default messages from .vue files.',
+})
+export class ExtractMessages implements CommandHandler {
+  public async run(args: string[], silent: boolean) {
+    try {
+      await runProcess('node', [packageRoot('dist/scripts/extract-i18n-messages.js')], { silent });
+    } catch (e) {
+      logErrorBold(e);
+    }
+  }
+}
