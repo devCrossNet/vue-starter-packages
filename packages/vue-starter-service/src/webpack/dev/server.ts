@@ -11,6 +11,8 @@ const isomorphicConfig = nodeRequire(packageRoot('dist/webpack/config/isomorphic
 let initialized: boolean = false;
 let devMiddleware: WebpackDevMiddleware;
 let clientCompiler: any;
+let bundle: string;
+let template: string;
 
 export default (app: Express.Application, callback: any): void => {
   /**
@@ -22,11 +24,12 @@ export default (app: Express.Application, callback: any): void => {
   if (initialized) {
     app.use(devMiddleware as any);
     app.use(require('webpack-hot-middleware')(clientCompiler));
+
+    if (bundle && template) {
+      callback(bundle, template);
+    }
     return;
   }
-
-  let bundle: string;
-  let template: string;
 
   clientConfig.entry = ['webpack-hot-middleware/client', clientConfig.entry.app];
   clientConfig.output.filename = '[name].js';
