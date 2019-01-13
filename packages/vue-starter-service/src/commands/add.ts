@@ -45,7 +45,9 @@ export class Add implements CommandHandler {
         } else {
           Result(`Package ${result.package} successfully installed.`);
 
-          opn(`https://www.npmjs.com/package/${result.package}`).catch((err) => logErrorBold(err));
+          opn(`https://github.com/devCrossNet/vue-starter-packages/tree/master/packages/${result.package}`, {
+            wait: false,
+          }).catch((err) => logErrorBold(err));
         }
       });
     }
