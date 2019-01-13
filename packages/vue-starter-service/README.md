@@ -19,19 +19,21 @@ vue-starter service for development tasks
 
 Options:
   -v, --version             output the version number
+  -s, --silent              silence output.
   -h, --help                output usage information
 
 Commands:
-  generate|g                generate components, connected components or modules
-  extract-i18n-messages|em  extract i18n messages
-  test|t [options]          run unit-tests
-  lint|l                    lint project files
-  e2e                       run e2e tests
-  clean|c                   clean up project
-  storybook|sb [options]    run Storybook
-  update|u                  update your local copy of the vue-starter
-  prettier|p [options]      format project
-  release|r [options]       generate changelog, release new npm version add new git tag
-  build|b [options]         build project for production
-  dev|d [options]           serve application for development
+  add|a                     Add a vue-starter package to your project.
+  build|b [options]         Build project for production.
+  clean|c                   Clean up the project directory.
+  dev|d [options]           Serve application for development.
+  e2e                       Run e2e tests with cypress.io.
+  extract-i18n-messages|em  Extract i18n default messages from .vue files.
+  generate|g                Generate Components, Connected Components or Modules.
+  lint|l                    Lint project files.
+  prettier|p [options]      Format project files.
+  release|r [options]       Generate changelog, release new npm version add new git tag.
+  storybook [options]       Run Storybook.
+  test|t [options]          Run unit-tests with jest. All jest CLI options are supported.
+  update|u                  Update your local copy of the vue-starter.
 ```
