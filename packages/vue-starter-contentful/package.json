@@ -1,0 +1,70 @@
+{
+  "name": "vue-starter-contentful",
+  "version": "1.0.0-alpha.7",
+  "description": "contentful integration for the vue-starter project",
+  "author": "Johannes Werner <johannes.werner86@gmail.com>",
+  "homepage": "https://github.com/devCrossNet/vue-starter-packages#readme",
+  "license": "MIT",
+  "directories": {
+    "dist": "dist"
+  },
+  "files": [
+    "dist",
+    "template"
+  ],
+  "main": "dist/ContentfulMiddleware.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devCrossNet/vue-starter-packages.git"
+  },
+  "scripts": {
+    "compile": "tsc",
+    "prebuild": "npm run clean",
+    "build": "npm run compile",
+    "clean": "rimraf ./dist ./build",
+    "dev": "tsc --watch",
+    "test_": "jest --coverage",
+    "lint": "tslint -c tslint.json './src/**/*.ts'"
+  },
+  "bugs": {
+    "url": "https://github.com/devCrossNet/vue-starter-packages/issues"
+  },
+  "dependencies": {
+    "contentful": "^7.0.6",
+    "express": "^4.16.4",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "ts-jest": "^22.4.6"
+  },
+  "jest": {
+    "globals": {
+      "window": true
+    },
+    "rootDir": "./src",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "transform": {
+      ".(ts|tsx)": "<rootDir>../node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "coverageReporters": [
+      "text"
+    ]
+  }
+}
