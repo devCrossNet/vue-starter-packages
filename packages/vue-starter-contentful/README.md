@@ -5,7 +5,7 @@
 # Installation
 
 ```js
-vue-starter-service add
+npm run add
 ```
 
 # Create Contentful Models
