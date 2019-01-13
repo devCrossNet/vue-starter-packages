@@ -33,7 +33,7 @@ export class Add implements CommandHandler {
     HeadLine(`Installing ${result.package} into your project.`);
 
     try {
-      await runProcess('npm', ['link', result.package], { silent: true });
+      await runProcess('npm', ['install', '--save', result.package], { silent: true });
     } catch (e) {
       logErrorBold(e);
     }
