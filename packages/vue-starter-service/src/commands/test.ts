@@ -1,4 +1,4 @@
-import { Command, CommandHandler } from '../lib/command';
+import { Command, ICommandHandler } from '../lib/command';
 import { runProcess } from '../utils/process';
 
 @Command({
@@ -7,7 +7,7 @@ import { runProcess } from '../utils/process';
   description: 'Run unit-tests with jest. All jest CLI options are supported.',
   options: [{ flags: '-c, --coverage', description: 'Run tests with coverage.' }],
 })
-export class Test implements CommandHandler {
+export class Test implements ICommandHandler {
   public coverage: boolean;
 
   public async run(args: string[], silent: boolean) {

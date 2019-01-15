@@ -1,4 +1,4 @@
-import { Command, CommandHandler } from '../lib/command';
+import { Command, ICommandHandler } from '../lib/command';
 import { runProcess } from '../utils/process';
 import { packageRoot } from '../utils/path';
 import { logErrorBold } from '../utils/ui';
@@ -8,7 +8,7 @@ import { logErrorBold } from '../utils/ui';
   alias: 'u',
   description: 'Update your local copy of the vue-starter.',
 })
-export class Update implements CommandHandler {
+export class Update implements ICommandHandler {
   public async run(args: string[], silent: boolean) {
     try {
       await runProcess('node', [packageRoot('dist/scripts/update.js')], { silent });

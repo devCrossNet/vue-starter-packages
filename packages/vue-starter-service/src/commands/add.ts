@@ -1,5 +1,5 @@
 import * as fs from 'fs-extra';
-import { Command, CommandHandler } from '../lib/command';
+import { Command, ICommandHandler } from '../lib/command';
 import { prompt, Question } from 'inquirer';
 import { HeadLine, logErrorBold, Result } from '../utils/ui';
 import { runProcess } from '../utils/process';
@@ -15,7 +15,7 @@ interface AddTaskResult {
   alias: 'a',
   description: 'Add a vue-starter package to your project.',
 })
-export class Add implements CommandHandler {
+export class Add implements ICommandHandler {
   private questions: Question[] = [
     {
       type: 'list',

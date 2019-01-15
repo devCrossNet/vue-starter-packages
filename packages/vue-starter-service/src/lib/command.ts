@@ -1,20 +1,27 @@
 import * as commander from 'commander';
 
-export interface CommandMetadata {
+export interface ICommandMetadata {
   name: string;
   description: string;
   alias?: string;
-  options?: Option[];
+  options?: IOption[];
+  arguments?: IArgument[];
 }
 
-export interface Option {
+export interface IOption {
   flags: string;
   description?: string;
   formatter?: any;
   defaultValue?: any;
 }
 
-export interface CommandHandler {
+export interface IArgument {
+  name: string;
+  required?: boolean;
+  defaultValue?: string;
+}
+
+export interface ICommandHandler {
   run(args: string[], silent: boolean);
 }
 
@@ -32,7 +39,7 @@ const getProperties = (obj: any): string[] => {
   return result;
 };
 
-export function Command(meta: CommandMetadata): any {
+export function Command(meta: ICommandMetadata): any {
   return (Target) => {
     const target = new Target();
     const command = commander.command(meta.name);
@@ -48,7 +55,7 @@ export function Command(meta: CommandMetadata): any {
     }
 
     if (meta.options) {
-      meta.options.forEach((option: Option) => {
+      meta.options.forEach((option: IOption) => {
         command.option(option.flags, option.description, option.defaultValue);
 
         if (option.formatter) {
@@ -59,12 +66,28 @@ export function Command(meta: CommandMetadata): any {
       });
     }
 
-    command.action((data: any) => {
+    if (meta.arguments) {
+      meta.arguments.forEach((arg: IArgument) => {
+        if (arg.required) {
+          command.arguments(`<${arg.name}>`);
+        } else {
+          command.arguments(`[${arg.name}]`);
+        }
+      });
+    }
+
+    command.action(function(data: any) {
       const options = getProperties(data);
-      const args = (data.parent && data.parent.rawArgs.splice(3)) || [];
-      const silent = !!(data.parent && data.parent.silent);
+      const args = (data && data.parent && data.parent.rawArgs.splice(3)) || [];
+      const silent = !!(data && data.parent && data.parent.silent);
 
       options.forEach((option: any) => (target[option] = data[option]));
+
+      if (meta.arguments) {
+        meta.arguments.forEach((arg: IArgument, idx: number) => {
+          target[arg.name] = arguments[idx] ? arguments[idx] : arg.defaultValue;
+        });
+      }
 
       target.run(args, silent);
     });

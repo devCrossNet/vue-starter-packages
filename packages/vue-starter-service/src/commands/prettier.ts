@@ -1,4 +1,4 @@
-import { Command, CommandHandler } from '../lib/command';
+import { Command, ICommandHandler } from '../lib/command';
 import { runProcess } from '../utils/process';
 import { logErrorBold } from '../utils/ui';
 import { Config } from '../models/Config';
@@ -12,7 +12,7 @@ import { Config } from '../models/Config';
     { flags: '-s, --staged', description: 'O≈nly prettify staged files' },
   ],
 })
-export class Prettier implements CommandHandler {
+export class Prettier implements ICommandHandler {
   public pattern: string;
   public staged: boolean;
 

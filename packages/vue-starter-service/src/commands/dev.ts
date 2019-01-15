@@ -1,4 +1,4 @@
-import { Command, CommandHandler } from '../lib/command';
+import { Command, ICommandHandler } from '../lib/command';
 import { runProcess } from '../utils/process';
 import { HeadLine, logErrorBold } from '../utils/ui';
 import { packageRoot } from '../utils/path';
@@ -9,7 +9,7 @@ import { packageRoot } from '../utils/path';
   description: 'Serve application for development.',
   options: [{ flags: '-p, --port <port>', description: 'Web-server port.', defaultValue: '3000' }],
 })
-export class Dev implements CommandHandler {
+export class Dev implements ICommandHandler {
   public port: string;
 
   public async run(args: string[], silent: boolean) {

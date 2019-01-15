@@ -1,4 +1,4 @@
-import { Command, CommandHandler } from '../lib/command';
+import { Command, ICommandHandler } from '../lib/command';
 import { runProcess } from '../utils/process';
 import { logErrorBold } from '../utils/ui';
 
@@ -7,7 +7,7 @@ import { logErrorBold } from '../utils/ui';
   alias: 'l',
   description: 'Lint project files.',
 })
-export class Lint implements CommandHandler {
+export class Lint implements ICommandHandler {
   public async run(args: string[], silent: boolean) {
     args = args.concat(['--fix', '-c', 'tslint.json', '-p', 'tsconfig.json']);
 

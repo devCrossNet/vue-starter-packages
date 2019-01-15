@@ -1,4 +1,4 @@
-import { Command, CommandHandler } from '../lib/command';
+import { Command, ICommandHandler } from '../lib/command';
 import { runProcess } from '../utils/process';
 import { logErrorBold } from '../utils/ui';
 
@@ -7,7 +7,7 @@ import { logErrorBold } from '../utils/ui';
   description: 'Run Storybook.',
   options: [{ flags: '-d, --dev', description: 'Run Storybook in development mode.' }],
 })
-export class Storybook implements CommandHandler {
+export class Storybook implements ICommandHandler {
   public dev: boolean;
 
   public async run(args: string[], silent: boolean) {

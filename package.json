@@ -28,5 +28,8 @@
       "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
       "pre-commit": "pretty-quick --staged && npm run lint && npm run test"
     }
+  },
+  "dependencies": {
+    "download-git-repo": "^1.1.0"
   }
 }

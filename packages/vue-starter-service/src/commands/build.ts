@@ -1,4 +1,4 @@
-import { Command, CommandHandler } from '../lib/command';
+import { Command, ICommandHandler } from '../lib/command';
 import { runProcess } from '../utils/process';
 import { HeadLine, log, logErrorBold, Result } from '../utils/ui';
 import { packageRoot } from '../utils/path';
@@ -13,7 +13,7 @@ import * as _ from 'lodash';
     { flags: '-spa, --spa', description: 'Build only client-side application.' },
   ],
 })
-export class Build implements CommandHandler {
+export class Build implements ICommandHandler {
   public analyze: boolean;
   public spa: boolean;
 

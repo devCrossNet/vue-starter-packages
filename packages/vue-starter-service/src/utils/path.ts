@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 export const packageRoot = (dir: any = '') => {
-  return path.join(process.cwd(), 'node_modules/vue-starter-service', dir);
+  return path.join(__dirname, '../../', dir);
 };
 
 export const runtimeRoot = (dir: any = '') => {

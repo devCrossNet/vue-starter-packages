@@ -1,4 +1,4 @@
-import { Command, CommandHandler } from '../lib/command';
+import { Command, ICommandHandler } from '../lib/command';
 import { runProcess } from '../utils/process';
 import { logErrorBold } from '../utils/ui';
 
@@ -6,7 +6,7 @@ import { logErrorBold } from '../utils/ui';
   name: 'e2e',
   description: 'Run e2e tests with cypress.io.',
 })
-export class E2E implements CommandHandler {
+export class E2E implements ICommandHandler {
   public async run(args: string[], silent: boolean) {
     args = args.concat(['run', '--browser', 'chrome']);
 

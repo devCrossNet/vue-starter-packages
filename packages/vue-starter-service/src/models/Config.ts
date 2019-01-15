@@ -22,4 +22,8 @@ export interface IConfig {
 
 export const configPath: string = runtimeRoot('.vue-starter/config.json');
 
-export const Config: IConfig = JSON.parse(fs.readFileSync(configPath).toString());
+export let Config: IConfig;
+
+if (fs.existsSync(configPath)) {
+  Config = JSON.parse(fs.readFileSync(configPath).toString());
+}

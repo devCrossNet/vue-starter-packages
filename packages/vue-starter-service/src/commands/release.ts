@@ -1,4 +1,4 @@
-import { Command, CommandHandler } from '../lib/command';
+import { Command, ICommandHandler } from '../lib/command';
 import { runProcess } from '../utils/process';
 import { log, logErrorBold, logInfo, Result } from '../utils/ui';
 
@@ -12,7 +12,7 @@ import { log, logErrorBold, logInfo, Result } from '../utils/ui';
     { flags: '-p, --patch', description: 'Release new patch version' },
   ],
 })
-export class Release implements CommandHandler {
+export class Release implements ICommandHandler {
   public major: boolean;
   public minor: boolean;
   public patch: boolean;

@@ -1,4 +1,4 @@
-import { Command, CommandHandler } from '../lib/command';
+import { Command, ICommandHandler } from '../lib/command';
 import { runProcess } from '../utils/process';
 import { logErrorBold } from '../utils/ui';
 import { Config } from '../models/Config';
@@ -8,7 +8,7 @@ import { Config } from '../models/Config';
   alias: 'c',
   description: 'Clean up the project directory.',
 })
-export class Clean implements CommandHandler {
+export class Clean implements ICommandHandler {
   public async run(args: string[], silent: boolean) {
     args = Config.clean.concat(args);
 
