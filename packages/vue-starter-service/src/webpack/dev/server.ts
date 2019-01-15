@@ -1,12 +1,11 @@
 import * as Express from 'express';
 import { WebpackDevMiddleware } from 'webpack-dev-middleware';
-import { packageRoot } from '../../utils/path';
 
 const path = require('path');
 const webpack = require('webpack');
 const MFS = require('memory-fs');
-const clientConfig = nodeRequire(packageRoot('dist/webpack/config/client')).default;
-const isomorphicConfig = nodeRequire(packageRoot('dist/webpack/config/isomorphic')).default;
+const clientConfig = nodeRequire(path.resolve(__dirname, '../config/client')).default;
+const isomorphicConfig = nodeRequire(path.resolve(__dirname, '../config/isomorphic')).default;
 
 let initialized: boolean = false;
 let devMiddleware: WebpackDevMiddleware;
