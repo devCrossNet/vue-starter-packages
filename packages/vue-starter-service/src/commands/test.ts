@@ -1,5 +1,6 @@
 import { Command, ICommandHandler } from '../lib/command';
 import { runProcess } from '../utils/process';
+import { logErrorBold } from '../utils/ui';
 
 @Command({
   name: 'test',
@@ -18,7 +19,7 @@ export class Test implements ICommandHandler {
     try {
       await runProcess('jest', args, { silent });
     } catch (e) {
-      console.log(e);
+      logErrorBold(e);
     }
   }
 }

@@ -56,8 +56,6 @@ export function Command(meta: ICommandMetadata): any {
 
     if (meta.options) {
       meta.options.forEach((option: IOption) => {
-        command.option(option.flags, option.description, option.defaultValue);
-
         if (option.formatter) {
           command.option(option.flags, option.description, option.formatter, option.defaultValue);
         } else {
@@ -76,14 +74,16 @@ export function Command(meta: ICommandMetadata): any {
       });
     }
 
-    command.action(function(data: any) {
+    command.action(function() {
+      const hasArgs = meta.arguments ? meta.arguments.length > 0 : false;
+      const data = hasArgs ? arguments[meta.arguments.length] : arguments[0];
       const options = getProperties(data);
       const args = (data && data.parent && data.parent.rawArgs.splice(3)) || [];
       const silent = !!(data && data.parent && data.parent.silent);
 
       options.forEach((option: any) => (target[option] = data[option]));
 
-      if (meta.arguments) {
+      if (hasArgs) {
         meta.arguments.forEach((arg: IArgument, idx: number) => {
           target[arg.name] = arguments[idx] ? arguments[idx] : arg.defaultValue;
         });
