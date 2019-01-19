@@ -1,4 +1,6 @@
-import { spawn, SpawnOptions } from 'child_process';
+import { ChildProcess, spawn, SpawnOptions } from 'child_process';
+
+const processes = [];
 
 export const runProcess = (
   name: string,
@@ -40,6 +42,15 @@ export const runProcess = (
 
     childProcess.on('error', (err: Error) => {
       reject(err);
+    });
+
+    processes.push(childProcess);
+
+    process.on('SIGINT', () => {
+      processes.forEach((p: ChildProcess) => {
+        p.kill('SIGINT');
+      });
+      process.exit(0);
     });
   });
 };
