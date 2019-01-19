@@ -31,7 +31,7 @@ export class Release implements ICommandHandler {
     try {
       logInfo('Generating CHANGELOG.md...');
 
-      await runProcess('changelog', args, { silent });
+      await runProcess('changelog', args.filter((arg: string) => arg !== '--silent'), { silent });
     } catch (e) {
       logErrorBold(e);
     }
