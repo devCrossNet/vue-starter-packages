@@ -32,52 +32,32 @@ export class Release implements ICommandHandler {
       logInfo('Generating CHANGELOG.md...');
 
       await runProcess('changelog', args.filter((arg: string) => arg !== '--silent'), { silent });
-    } catch (e) {
-      logErrorBold(e);
-    }
 
-    try {
       logInfo('Adding CHANGELOG.md...');
 
       await runProcess('git', ['add', 'CHANGELOG.md'], { silent });
-    } catch (e) {
-      logErrorBold(e);
-    }
 
-    try {
       logInfo('Committing changes...');
 
       await runProcess('git', ['commit', '-m', 'chore: update changelog'], { silent });
-    } catch (e) {
-      logErrorBold(e);
-    }
 
-    try {
       logInfo(`Releasing npm ${npmVersion} version...`);
 
       await runProcess('npm', ['version', npmVersion], { silent });
-    } catch (e) {
-      logErrorBold(e);
-    }
 
-    try {
       logInfo('Pushing changes...');
 
       await runProcess('git', ['push', 'origin'], { silent });
-    } catch (e) {
-      logErrorBold(e);
-    }
 
-    try {
       logInfo('Pushing tags...');
 
       await runProcess('git', ['push', 'origin', '--tags'], { silent });
+
+      log('');
+
+      Result('New version released.');
     } catch (e) {
       logErrorBold(e);
     }
-
-    log('');
-
-    Result('New version released.');
   }
 }
