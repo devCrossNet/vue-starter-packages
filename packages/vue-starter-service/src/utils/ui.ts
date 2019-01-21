@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import * as _ from 'lodash';
+import { format } from 'util';
 
 export const log = (message) => console.log(chalk.white(message));
 export const logInfo = (message) => console.log(chalk.blue(message));
@@ -27,16 +27,41 @@ const formats = {
 };
 
 export const HeadLine = (message: string) => {
-  const line = new Array(message.length + 1).join('=');
-
   logInfoBold(message);
-  logInfo(line);
 };
 
 export const Result = (message: string) => {
-  const line = new Array(message.length + 1).join('=');
-
-  logSuccess(line);
-  logSuccessBold(message);
-  logSuccess(line);
+  logSuccessBold('✓ ' + message);
 };
+
+export class Spinner {
+  private spinner: string[] = ['◜', '◠', '◝', '◞', '◡', '◟'];
+  private timer = null;
+  public message: string = '';
+
+  public start = () => {
+    const play = (arr: string[]) => {
+      const len = arr.length;
+      let i = 0;
+
+      const drawTick = () => {
+        const str = arr[i++ % len];
+        process.stdout.write('\u001b[0G' + str + '\u001b[90m' + this.message + '\u001b[0m');
+      };
+
+      this.timer = setInterval(drawTick, 100);
+    };
+
+    const frames = this.spinner.map((c: string) => {
+      return format('\u001b[96m%s ', c);
+    });
+
+    play(frames);
+  };
+
+  public stop = () => {
+    process.stdout.write('\u001b[0G\u001b[2K' + chalk.green(`✓ ${this.message}`));
+    log('');
+    clearInterval(this.timer);
+  };
+}

@@ -1,14 +1,11 @@
 import * as fs from 'fs-extra';
+import chalk from 'chalk';
 import { Command, ICommandHandler } from '../lib/command';
 import { prompt, Question } from 'inquirer';
-import { HeadLine, logErrorBold, Result } from '../utils/ui';
+import { logErrorBold, Spinner } from '../utils/ui';
 import { runProcess } from '../utils/process';
 import { runtimeRoot } from '../utils/path';
 import opn = require('opn');
-
-interface AddTaskResult {
-  package: string;
-}
 
 @Command({
   name: 'add',
@@ -26,28 +23,47 @@ export class Add implements ICommandHandler {
   ];
 
   public async run(args: string[], silent: boolean) {
-    const result: AddTaskResult = await prompt<AddTaskResult>(this.questions);
-    const source = runtimeRoot(`node_modules/${result.package}/template`);
+    let result: any = await prompt(this.questions);
+    const packageName = result.package;
+    const source = runtimeRoot(`node_modules/${packageName}/template`);
     const destination = runtimeRoot();
+    const spinner = new Spinner();
 
-    HeadLine(`Installing ${result.package} into your project.`);
+    spinner.message = `Installing ${chalk.bold(packageName)} into your project...`;
+    spinner.start();
 
     try {
-      await runProcess('npm', ['install', '--save', result.package], { silent: true });
+      await runProcess('npm', ['install', '--save', packageName], { silent: true });
     } catch (e) {
+      spinner.stop();
       logErrorBold(e);
     }
 
     if (fs.existsSync(source)) {
-      fs.copy(source, destination, (e) => {
+      fs.copy(source, destination, async (e) => {
         if (e) {
+          spinner.stop();
           logErrorBold(e);
         } else {
-          Result(`Package ${result.package} successfully installed.`);
+          spinner.message = `Package ${chalk.bold(packageName)} successfully installed`;
+          spinner.stop();
 
-          opn(`https://github.com/devCrossNet/vue-starter-packages/tree/master/packages/${result.package}`, {
-            wait: false,
-          }).catch((err) => logErrorBold(err));
+          this.questions = [
+            {
+              type: 'confirm',
+              name: 'open',
+              message: 'Do you want to open the package documentation?',
+              default: true,
+            },
+          ];
+
+          result = await prompt(this.questions);
+
+          if (result.open) {
+            opn(`https://github.com/devCrossNet/vue-starter-packages/tree/master/packages/${packageName}`, {
+              wait: false,
+            }).catch((err) => logErrorBold(err));
+          }
         }
       });
     }

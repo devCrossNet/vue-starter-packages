@@ -1,8 +1,7 @@
 import { Command, ICommandHandler } from '../lib/command';
 import { runProcess } from '../utils/process';
-import { HeadLine, log, logErrorBold, Result } from '../utils/ui';
+import { log, logErrorBold, Spinner } from '../utils/ui';
 import { packageRoot } from '../utils/path';
-import * as _ from 'lodash';
 
 @Command({
   name: 'build',
@@ -43,14 +42,28 @@ const runWebpack = (configName: string, silent: boolean) => {
 const build = async (silent: boolean) => {
   const promises = [];
   const startTime: number = Date.now();
+  const spinner = new Spinner();
+  let done = 0;
 
-  HeadLine('Start building production bundles...');
+  const setSpinnerMessage = () => {
+    if (done === 3) {
+      spinner.message = `Finished building production bundles in ${Date.now() - startTime}ms`;
+    } else {
+      spinner.message = `Building production bundles ${done}/3 ...`;
+    }
+  };
 
-  log('');
+  if (!silent) {
+    spinner.start();
+    setSpinnerMessage();
+  }
 
   const run = (configName: string) => {
     promises.push(
-      runWebpack(configName, silent).then(() => log(`${_.upperFirst(configName)} bundle successfully build.`)),
+      runWebpack(configName, true).then(() => {
+        done = done + 1;
+        setSpinnerMessage();
+      }),
     );
   };
 
@@ -59,11 +72,9 @@ const build = async (silent: boolean) => {
   run('isomorphic');
 
   Promise.all(promises).then(() => {
-    const message = `Production build finished in ${Date.now() - startTime}ms`;
-
-    log('');
-
-    Result(message);
+    if (!silent) {
+      spinner.stop();
+    }
   });
 };
 
@@ -71,36 +82,34 @@ const analyze = async (silent: boolean) => {
   process.env.ANALYZE = 'true';
 
   const startTime: number = Date.now();
+  const spinner = new Spinner();
 
-  HeadLine('Start analyzing client bundle...');
+  if (!silent) {
+    spinner.start();
+    spinner.message = `Start analyzing client bundle...`;
+  }
 
-  log('');
+  await runWebpack('client', true);
 
-  await runWebpack('client', silent);
-
-  log('Client bundle successfully build.');
-
-  const message = `Analysis finished in ${Date.now() - startTime}ms`;
-
-  log('');
-
-  Result(message);
+  if (!silent) {
+    spinner.message = `Analysis finished in ${Date.now() - startTime}ms`;
+    spinner.stop();
+  }
 };
 
 const spa = async (silent: boolean) => {
   const startTime: number = Date.now();
+  const spinner = new Spinner();
 
-  HeadLine('Start building client bundle only...');
+  if (!silent) {
+    spinner.start();
+    spinner.message = `Start building client bundle only...`;
+  }
 
-  log('');
+  await runWebpack('spa', true);
 
-  await runWebpack('spa', silent);
-
-  log('Client bundle successfully build.');
-
-  const message = `Production build finished in ${Date.now() - startTime}ms`;
-
-  log('');
-
-  Result(message);
+  if (!silent) {
+    spinner.message = `Production build finished in ${Date.now() - startTime}ms`;
+    spinner.stop();
+  }
 };
