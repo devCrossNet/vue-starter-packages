@@ -35,7 +35,8 @@ export const ContentfulMiddleware = (options: IContentfulMiddlewareOptions) => {
   const sync = () => {
     client
       .getEntries({ content_type: 'page', include: 6, locale: '*' })
-      .then((contentTypes: EntryCollection<any>) => (entries = contentTypes.items));
+      .then((contentTypes: EntryCollection<any>) => (entries = contentTypes.items))
+      .catch((e: Error) => console.error(e)); // tslint:disable-line
   };
 
   sync();

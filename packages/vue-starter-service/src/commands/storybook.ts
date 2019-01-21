@@ -25,6 +25,8 @@ export class Storybook implements ICommandHandler {
 
     args = args.concat(['--config-dir', './.vue-starter/storybook']);
 
+    args = args.filter((arg: string) => arg !== '--silent');
+
     try {
       await runProcess(binary, args, { silent });
     } catch (e) {
