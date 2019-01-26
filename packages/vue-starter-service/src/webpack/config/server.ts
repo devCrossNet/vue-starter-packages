@@ -1,5 +1,5 @@
 import * as webpack from 'webpack';
-import { isDev, merge, nodeExternals } from './utils';
+import { isDev, merge } from './utils';
 import { baseServer } from './base-server';
 import { runtimeRoot } from '../../utils/path';
 
@@ -11,11 +11,6 @@ export let server = merge(baseServer, {
   output: {
     filename: 'server.js',
   },
-  externals: [
-    nodeExternals({
-      whitelist: ['webpack/hot/poll?1000'],
-    }),
-  ],
   plugins: [
     new CopyWebpackPlugin([
       { from: runtimeRoot('src/static'), to: '../static' },

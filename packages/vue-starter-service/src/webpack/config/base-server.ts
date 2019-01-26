@@ -1,5 +1,5 @@
 import * as webpack from 'webpack';
-import { merge } from './utils';
+import { merge, nodeExternals } from './utils';
 import { base } from './base';
 import { runtimeRoot } from '../../utils/path';
 
@@ -9,6 +9,11 @@ export let baseServer: webpack.Configuration = merge(base, {
     path: runtimeRoot('dist/server'),
     libraryTarget: 'commonjs',
   },
+  externals: [
+    nodeExternals({
+      whitelist: ['webpack/hot/poll?1000'],
+    }),
+  ],
   plugins: [
     new webpack.DefinePlugin({
       CLIENT: false,

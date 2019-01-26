@@ -13,7 +13,7 @@ export let base: webpack.Configuration = {
   },
   devtool: isProd ? false : '#eval-source-map',
   resolve: {
-    extensions: ['*', '.ts', '.js', '.vue', '.json'],
+    extensions: ['.ts', '.js', '.vue', '.json', '.node'],
     modules: [
       runtimeRoot('src'),
       runtimeRoot('node_modules'),
@@ -44,15 +44,20 @@ export let base: webpack.Configuration = {
       },
       {
         test: /\.scss$/,
-        use: [
-          'vue-style-loader',
+        rules: [
+          { loader: 'vue-style-loader' },
           {
             loader: 'css-loader',
+            exclude: [/global\.scss/],
             options: {
               modules: true,
               importLoaders: 1,
               localIdentName: '[local]_[hash:base64:8]',
             },
+          },
+          {
+            loader: 'css-loader',
+            include: [/global\.scss/],
           },
           {
             loader: 'postcss-loader',
@@ -81,6 +86,10 @@ export let base: webpack.Configuration = {
         options: {
           name: '[name].[ext]?[hash]',
         },
+      },
+      {
+        test: /\.css$/,
+        loader: ['vue-style-loader', 'css-loader'],
       },
     ],
   },
