@@ -1,6 +1,14 @@
-import { ChildProcess, spawn, SpawnOptions } from 'child_process';
+import { ChildProcess, SpawnOptions } from 'child_process';
 
+const spawn = require('cross-spawn');
 const processes = [];
+
+const killProcesses = () => {
+  processes.forEach((p: ChildProcess) => {
+    p.kill();
+  });
+  process.exit(0);
+};
 
 export const runProcess = (
   name: string,
@@ -20,7 +28,7 @@ export const runProcess = (
       localOptions.stdio = 'inherit';
     }
 
-    const childProcess = spawn(name, args, localOptions);
+    const childProcess: any = spawn(name, args, localOptions);
     let output = '';
 
     if (silent) {
@@ -46,11 +54,6 @@ export const runProcess = (
 
     processes.push(childProcess);
 
-    process.on('SIGINT', () => {
-      processes.forEach((p: ChildProcess) => {
-        p.kill('SIGINT');
-      });
-      process.exit(0);
-    });
+    process.on('SIGINT', killProcesses);
   });
 };
