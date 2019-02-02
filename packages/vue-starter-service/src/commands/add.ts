@@ -5,7 +5,7 @@ import { prompt, Question } from 'inquirer';
 import { logErrorBold, Spinner } from '../utils/ui';
 import { runProcess } from '../utils/process';
 import { runtimeRoot } from '../utils/path';
-import opn = require('opn');
+const opn = require('opn');
 
 @Command({
   name: 'add',
