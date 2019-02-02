@@ -42,6 +42,10 @@ export default (app: Express.Application, callback: any): void => {
       colors: true,
       chunks: false,
     },
+    watchOptions: {
+      aggregateTimeout: 300,
+      poll: 1000
+    },
   });
 
   app.use(devMiddleware as any);
