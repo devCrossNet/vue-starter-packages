@@ -1,4 +1,3 @@
-/* tslint:disable:no-console */
 import axios, { AxiosResponse } from 'axios';
 import * as fs from 'fs';
 import * as https from 'https';

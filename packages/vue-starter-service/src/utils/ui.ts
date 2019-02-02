@@ -13,19 +13,6 @@ export const logErrorBold = (message) => console.log(chalk.red.bold(message));
 export const logSuccessBold = (message) => console.log(chalk.green.bold(message));
 export const logWarningBold = (message) => console.log(chalk.yellow.bold(message));
 
-const formats = {
-  log,
-  logInfo,
-  logError,
-  logSuccess,
-  logWarning,
-  logBold,
-  logInfoBold,
-  logErrorBold,
-  logSuccessBold,
-  logWarningBold,
-};
-
 export const HeadLine = (message: string) => {
   logInfoBold(message);
 };
