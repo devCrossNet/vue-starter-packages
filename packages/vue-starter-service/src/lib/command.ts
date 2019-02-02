@@ -1,4 +1,5 @@
 import * as commander from 'commander';
+import * as _ from 'lodash';
 
 export interface ICommandMetadata {
   name: string;
@@ -78,10 +79,14 @@ export function Command(meta: ICommandMetadata): any {
       const hasArgs = meta.arguments ? meta.arguments.length > 0 : false;
       const data = hasArgs ? arguments[meta.arguments.length] : arguments[0];
       const options = getProperties(data);
-      const args = (data && data.parent && data.parent.rawArgs.splice(3)) || [];
+      let args = (data && data.parent && data.parent.rawArgs.splice(3)) || [];
       const silent = !!(data && data.parent && data.parent.silent);
 
-      options.forEach((option: any) => (target[option] = data[option]));
+      if (_.isArray(data)) {
+        args = data;
+      } else {
+        options.forEach((option: any) => (target[option] = data[option]));
+      }
 
       if (hasArgs) {
         meta.arguments.forEach((arg: IArgument, idx: number) => {
