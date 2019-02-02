@@ -45,11 +45,13 @@ export const runProcess = (
         resolve(undefined);
       } else {
         reject(new Error(`Exit with error code: ${code}\n\nTrace: ${silent ? output : '-'}`));
+        process.exit(code);
       }
     });
 
     childProcess.on('error', (err: Error) => {
       reject(err);
+      process.exit(1);
     });
 
     processes.push(childProcess);
