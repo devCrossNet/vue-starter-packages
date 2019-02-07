@@ -7,7 +7,7 @@ const HTMLPlugin = require('html-webpack-plugin');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 
-export const client: webpack.Configuration = merge(base, {
+export let client: webpack.Configuration = merge(base, {
   entry: {
     app: runtimeRoot('src/client/index'),
   },
@@ -41,5 +41,7 @@ if (isProd) {
     new CompressionPlugin({ algorithm: 'gzip', test: /\.js$|\.css$|\.html$/, threshold: 0, minRatio: 1 }),
   ]);
 }
+
+client = require(runtimeRoot('.vue-starter/webpack.config'))(client, 'client');
 
 export default client;
