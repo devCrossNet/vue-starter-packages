@@ -1,6 +1,6 @@
 {
   "name": "vue-starter-vuex-persist",
-  "version": "1.0.0-beta.7",
+  "version": "1.0.0-beta.8",
   "description": "vue-starter vuex middle ware to persist stage + adapters",
   "author": "Johannes Werner <johannes.werner86@gmail.com>",
   "homepage": "https://github.com/devCrossNet/vue-starter-packages#readme",
