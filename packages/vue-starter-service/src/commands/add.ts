@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { Command, ICommandHandler } from '../lib/command';
 import { prompt, Question } from 'inquirer';
 import { logErrorBold, Spinner } from '../utils/ui';
-import { runProcess } from '../utils/process';
+import { handleProcessError, runProcess } from '../utils/process';
 import { runtimeRoot } from '../utils/path';
 const opn = require('opn');
 
@@ -36,7 +36,7 @@ export class Add implements ICommandHandler {
       await runProcess('npm', ['install', '--save', packageName], { silent: true });
     } catch (e) {
       spinner.stop();
-      logErrorBold(e);
+      handleProcessError(e);
     }
 
     if (fs.existsSync(source)) {
@@ -60,9 +60,13 @@ export class Add implements ICommandHandler {
           result = await prompt(this.questions);
 
           if (result.open) {
-            opn(`https://github.com/devCrossNet/vue-starter-packages/tree/master/packages/${packageName}`, {
-              wait: false,
-            }).catch((err) => logErrorBold(err));
+            try {
+              await opn(`https://github.com/devCrossNet/vue-starter-packages/tree/master/packages/${packageName}`, {
+                wait: false,
+              });
+            } catch (e) {
+              logErrorBold(e);
+            }
           }
         }
       });

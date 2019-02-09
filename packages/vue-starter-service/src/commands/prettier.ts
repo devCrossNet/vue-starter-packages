@@ -1,6 +1,5 @@
 import { Command, ICommandHandler } from '../lib/command';
-import { runProcess } from '../utils/process';
-import { logErrorBold } from '../utils/ui';
+import { handleProcessError, runProcess } from '../utils/process';
 import { Config } from '../models/Config';
 
 @Command({
@@ -40,7 +39,7 @@ const prettier = async (args: string[], pattern: string, silent: boolean) => {
 
     await runProcess('prettier', args, { silent });
   } catch (e) {
-    logErrorBold(e);
+    handleProcessError(e);
   }
 };
 
@@ -50,6 +49,6 @@ const prettyQuick = async (args: string[], silent: boolean) => {
   try {
     await runProcess('pretty-quick', args, { silent });
   } catch (e) {
-    logErrorBold(e);
+    handleProcessError(e);
   }
 };

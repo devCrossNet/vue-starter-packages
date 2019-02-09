@@ -1,6 +1,6 @@
 import { Command, ICommandHandler } from '../lib/command';
-import { runProcess } from '../utils/process';
-import { logErrorBold, Spinner } from '../utils/ui';
+import { handleProcessError, runProcess } from '../utils/process';
+import { Spinner } from '../utils/ui';
 
 @Command({
   name: 'lint',
@@ -19,15 +19,13 @@ export class Lint implements ICommandHandler {
 
     try {
       await runProcess('tslint', args.filter((arg: string) => arg !== '--silent'), { silent });
-    } catch (e) {
+
       if (!silent) {
+        spinner.message = 'All files passed linting';
         spinner.stop();
       }
-      logErrorBold(e);
-    }
-    if (!silent) {
-      spinner.message = 'All files passed linting';
-      spinner.stop();
+    } catch (e) {
+      handleProcessError(e, spinner);
     }
   }
 }

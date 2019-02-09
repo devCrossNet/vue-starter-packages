@@ -1,6 +1,5 @@
 import { Command, ICommandHandler } from '../lib/command';
-import { runProcess } from '../utils/process';
-import { logErrorBold } from '../utils/ui';
+import { handleProcessError, runProcess } from '../utils/process';
 
 @Command({
   name: 'e2e',
@@ -13,7 +12,7 @@ export class E2E implements ICommandHandler {
     try {
       await runProcess('cypress', args, { silent });
     } catch (e) {
-      logErrorBold(e);
+      handleProcessError(e);
     }
   }
 }

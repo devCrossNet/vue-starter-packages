@@ -1,5 +1,5 @@
 import { Command, ICommandHandler } from '../lib/command';
-import { runProcess } from '../utils/process';
+import { handleProcessError, runProcess } from '../utils/process';
 import { logErrorBold, Spinner } from '../utils/ui';
 import { Config } from '../models/Config';
 
@@ -17,12 +17,11 @@ export class Clean implements ICommandHandler {
 
     try {
       await runProcess('rimraf', args, { silent });
-    } catch (e) {
-      spinner.stop();
-      logErrorBold(e);
-    }
 
-    spinner.message = 'Directories cleaned';
-    spinner.stop();
+      spinner.message = 'Directories cleaned';
+      spinner.stop();
+    } catch (e) {
+      handleProcessError(e, spinner);
+    }
   }
 }

@@ -1,6 +1,5 @@
 import { Command, ICommandHandler } from '../lib/command';
-import { runProcess } from '../utils/process';
-import { logErrorBold } from '../utils/ui';
+import { handleProcessError, runProcess } from '../utils/process';
 
 @Command({
   name: 'storybook',
@@ -30,7 +29,7 @@ export class Storybook implements ICommandHandler {
     try {
       await runProcess(binary, args, { silent });
     } catch (e) {
-      logErrorBold(e);
+      handleProcessError(e);
     }
   }
 }

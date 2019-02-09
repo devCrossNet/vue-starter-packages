@@ -1,6 +1,6 @@
 import { Command, ICommandHandler } from '../lib/command';
-import { runProcess } from '../utils/process';
-import { HeadLine, logErrorBold } from '../utils/ui';
+import { handleProcessError, runProcess } from '../utils/process';
+import { HeadLine } from '../utils/ui';
 import { packageRoot } from '../utils/path';
 
 @Command({
@@ -31,7 +31,7 @@ export class Dev implements ICommandHandler {
         silent,
       });
     } catch (e) {
-      logErrorBold(e);
+      handleProcessError(e);
     }
   }
 }

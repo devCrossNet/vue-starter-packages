@@ -1,6 +1,5 @@
 import { Command, ICommandHandler } from '../lib/command';
-import { runProcess } from '../utils/process';
-import { logErrorBold } from '../utils/ui';
+import { handleProcessError, runProcess } from '../utils/process';
 import { packageRoot } from '../utils/path';
 
 @Command({
@@ -13,7 +12,7 @@ export class ExtractMessages implements ICommandHandler {
     try {
       await runProcess('node', [packageRoot('dist/scripts/extract-i18n-messages.js')], { silent });
     } catch (e) {
-      logErrorBold(e);
+      handleProcessError(e);
     }
   }
 }

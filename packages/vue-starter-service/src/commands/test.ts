@@ -1,6 +1,4 @@
 import { Command, ICommandHandler } from '../lib/command';
-import { runProcess } from '../utils/process';
-import { logErrorBold } from '../utils/ui';
 
 @Command({
   name: 'test',
@@ -16,10 +14,8 @@ export class Test implements ICommandHandler {
 
     process.env.NODE_ENV = 'test';
 
-    try {
-      await runProcess('jest', args, { silent });
-    } catch (e) {
-      logErrorBold(e);
-    }
+    const jest = require('jest');
+
+    jest.run(args);
   }
 }

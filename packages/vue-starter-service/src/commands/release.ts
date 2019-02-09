@@ -1,6 +1,6 @@
 import { Command, ICommandHandler } from '../lib/command';
-import { runProcess } from '../utils/process';
-import { log, logErrorBold, logInfo, Result } from '../utils/ui';
+import { handleProcessError, runProcess } from '../utils/process';
+import { log, logInfo, Result } from '../utils/ui';
 
 @Command({
   name: 'release',
@@ -57,7 +57,7 @@ export class Release implements ICommandHandler {
 
       Result('New version released.');
     } catch (e) {
-      logErrorBold(e);
+      handleProcessError(e);
     }
   }
 }

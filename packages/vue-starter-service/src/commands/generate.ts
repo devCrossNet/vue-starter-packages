@@ -1,7 +1,6 @@
 import { Command, ICommandHandler } from '../lib/command';
-import { runProcess } from '../utils/process';
+import { handleProcessError, runProcess } from '../utils/process';
 import { packageRoot } from '../utils/path';
-import { logErrorBold } from '../utils/ui';
 import { Config } from '../models/Config';
 
 @Command({
@@ -18,7 +17,7 @@ export class Generate implements ICommandHandler {
         silent,
       });
     } catch (e) {
-      logErrorBold(e);
+      handleProcessError(e);
     }
   }
 }

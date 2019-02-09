@@ -1,5 +1,5 @@
 import { Command, ICommandHandler } from '../lib/command';
-import { runProcess } from '../utils/process';
+import { handleProcessError, runProcess } from '../utils/process';
 import { log, logErrorBold, Spinner } from '../utils/ui';
 import { packageRoot } from '../utils/path';
 
@@ -19,7 +19,11 @@ export class Build implements ICommandHandler {
   public async run(args: string[], silent: boolean) {
     process.env.NODE_ENV = 'production';
 
-    await runProcess('rimraf', ['./dist']);
+    try {
+      await runProcess('rimraf', ['./dist']);
+    } catch (e) {
+      handleProcessError(e);
+    }
 
     if (this.analyze) {
       analyze(silent).catch((e) => logErrorBold(e));
@@ -71,11 +75,15 @@ const build = async (silent: boolean) => {
   run('server');
   run('isomorphic');
 
-  Promise.all(promises).then(() => {
+  try {
+    await Promise.all(promises);
+
     if (!silent) {
       spinner.stop();
     }
-  });
+  } catch (e) {
+    handleProcessError(e, spinner);
+  }
 };
 
 const analyze = async (silent: boolean) => {
@@ -89,7 +97,11 @@ const analyze = async (silent: boolean) => {
     spinner.message = `Start analyzing client bundle...`;
   }
 
-  await runWebpack('client', true);
+  try {
+    await runWebpack('client', true);
+  } catch (e) {
+    handleProcessError(e, spinner);
+  }
 
   if (!silent) {
     spinner.message = `Analysis finished in ${Date.now() - startTime}ms`;
@@ -106,7 +118,11 @@ const spa = async (silent: boolean) => {
     spinner.message = `Start building client bundle only...`;
   }
 
-  await runWebpack('spa', true);
+  try {
+    await runWebpack('spa', true);
+  } catch (e) {
+    handleProcessError(e, spinner);
+  }
 
   if (!silent) {
     spinner.message = `Production build finished in ${Date.now() - startTime}ms`;

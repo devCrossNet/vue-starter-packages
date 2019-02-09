@@ -1,7 +1,7 @@
 import { Command, ICommandHandler } from '../lib/command';
 import { HeadLine, logErrorBold, logInfo, Result, Spinner } from '../utils/ui';
 import { runtimeRoot } from '../utils/path';
-import { runProcess } from '../utils/process';
+import { handleProcessError, runProcess } from '../utils/process';
 import chalk from 'chalk';
 
 const download = require('download-git-repo');
@@ -23,26 +23,23 @@ export class Create implements ICommandHandler {
     const spinner = new Spinner();
 
     spinner.message = 'Downloading project...';
-
     spinner.start();
 
     download(branch, destination, async (e: any) => {
       if (e) {
-        spinner.stop();
-        logErrorBold(e);
+        handleProcessError({ code: 1, trace: e.toString() }, spinner);
       }
 
       spinner.message = 'Installing dependencies...';
 
       try {
         await runProcess('npm', ['install'], { cwd: destination, silent: true });
-      } catch (err) {
-        spinner.stop();
-        logErrorBold(err);
-      }
 
-      spinner.message = `Project ${chalk.bold(this.name)} successfully created`;
-      spinner.stop();
+        spinner.message = `Project ${chalk.bold(this.name)} successfully created`;
+        spinner.stop();
+      } catch (err) {
+        handleProcessError(e, spinner);
+      }
     });
   }
 }

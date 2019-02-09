@@ -46,8 +46,14 @@ export class Spinner {
     play(frames);
   };
 
-  public stop = () => {
-    process.stdout.write('\u001b[0G\u001b[2K' + chalk.green(`✓ ${this.message}`));
+  public stop = (err: boolean = false) => {
+    if (err) {
+      process.stdout.write('\u001b[0G\u001b[2K' + chalk.red(`✗ An error occurred.`));
+    } else {
+      process.stdout.write('\u001b[0G\u001b[2K' + chalk.green(`✓ ${this.message}`));
+    }
+
+    log('');
     log('');
     clearInterval(this.timer);
   };

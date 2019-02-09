@@ -1,14 +1,14 @@
-import { ChildProcess, SpawnOptions } from 'child_process';
+import { SpawnOptions } from 'child_process';
+import { logError, Spinner } from './ui';
+
+interface IProcessError {
+  code: number;
+  trace: string;
+}
 
 const spawn = require('cross-spawn');
+const kill = require('tree-kill');
 const processes = [];
-
-const killProcesses = () => {
-  processes.forEach((p: ChildProcess) => {
-    p.kill();
-  });
-  process.exit(0);
-};
 
 export const runProcess = (
   name: string,
@@ -29,14 +29,14 @@ export const runProcess = (
     }
 
     const childProcess: any = spawn(name, args, localOptions);
-    let output = '';
+    let trace = '';
 
     if (silent) {
       childProcess.stdout.on('data', (data: any) => {
-        output += data;
+        trace += data;
       });
       childProcess.stderr.on('data', (data: any) => {
-        output += data;
+        trace += data;
       });
     }
 
@@ -44,18 +44,31 @@ export const runProcess = (
       if (code === 0) {
         resolve(undefined);
       } else {
-        reject(new Error(`Exit with error code: ${code}\n\nTrace: ${silent ? output : '-'}`));
-        process.exit(code);
+        const err: IProcessError = { code, trace };
+        reject(err);
       }
     });
 
-    childProcess.on('error', (err: Error) => {
+    childProcess.on('error', () => {
+      const err: IProcessError = { code: 1, trace };
       reject(err);
-      process.exit(1);
     });
 
     processes.push(childProcess);
 
-    process.on('SIGINT', killProcesses);
+    process.on('SIGINT', (signal: string) => handleProcessError({ code: 2, trace: signal }));
+    process.on('uncaughtException', (e) => handleProcessError({ code: 1, trace: e.message }));
   });
+};
+
+export const handleProcessError = (err: IProcessError, spinner: Spinner = null) => {
+  if (spinner) {
+    spinner.stop(true);
+  }
+
+  logError(`Exit with error code: ${err.code}\n\nTrace:\n${err.trace}`);
+
+  kill(1, 'SIGKILL');
+
+  process.exit(err.code);
 };
