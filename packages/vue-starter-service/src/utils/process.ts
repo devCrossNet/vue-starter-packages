@@ -1,4 +1,4 @@
-import { SpawnOptions } from 'child_process';
+import { ChildProcess, SpawnOptions } from 'child_process';
 import { logError, Spinner } from './ui';
 
 interface IProcessError {
@@ -7,8 +7,12 @@ interface IProcessError {
 }
 
 const spawn = require('cross-spawn');
-const kill = require('tree-kill');
 const processes = [];
+const killProcesses = () => {
+  processes.forEach((p: ChildProcess) => {
+    p.kill();
+  });
+};
 
 export const runProcess = (
   name: string,
@@ -68,7 +72,7 @@ export const handleProcessError = (err: IProcessError, spinner: Spinner = null) 
 
   logError(`Exit with error code: ${err.code}\n\nTrace:\n${err.trace}`);
 
-  kill(1, 'SIGKILL');
+  killProcesses();
 
   process.exit(err.code);
 };
