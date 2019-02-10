@@ -1,5 +1,6 @@
 import { ChildProcess, SpawnOptions } from 'child_process';
 import { logError, Spinner } from './ui';
+import Signals = NodeJS.Signals;
 
 interface IProcessError {
   code: number;
@@ -60,7 +61,35 @@ export const runProcess = (
 
     processes.push(childProcess);
 
-    process.on('SIGINT', (signal: string) => handleProcessError({ code: 2, trace: signal }));
+    [
+      'SIGHUP',
+      'SIGINT',
+      'SIGQUIT',
+      'SIGUSR1',
+      'SIGUSR2',
+      'SIGTERM',
+      'SIGCONT',
+      'SIGILL',
+      'SIGTRAP',
+      'SIGABRT',
+      'SIGBUS',
+      'SIGFPE',
+      'SIGSEGV',
+      'SIGPIPE',
+      'SIGALRM',
+      'SIGTSTP',
+      'SIGTTIN',
+      'SIGTTOU',
+      'SIGPROF',
+      'SIGSYS',
+    ].forEach((signal: Signals) => {
+      process.on(signal, () => {
+        killProcesses();
+
+        process.exit(1);
+      });
+    });
+
     process.on('uncaughtException', (e) => handleProcessError({ code: 1, trace: e.message }));
   });
 };
